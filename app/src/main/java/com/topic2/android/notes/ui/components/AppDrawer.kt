@@ -143,4 +143,5 @@ fun LightDarkThemeItemPreview() {
     NotesTheme {
         LightDarkThemeItem()
     }
+
 }
