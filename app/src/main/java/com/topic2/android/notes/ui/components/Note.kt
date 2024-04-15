@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
         .heightIn(min = 64.dp)
         .background(Color.White, backgroundShape)
     ) {      NoteColor(
+        modifier = Modifier.align(Alignment.CenterVertically),
             color = rwGreen,
             size = 40.dp,
             padding = 4.dp,
