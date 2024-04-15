@@ -13,6 +13,42 @@ import androidx.compose.ui.unit.sp
 import com.topic2.android.notes.domain.model.ColorModel
 import com.topic2.android.notes.ui.components.NoteColor
 import com.topic2.android.notes.util.fromHex
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.ui.text.font.FontWeight
+
+@Composable
+private fun ColorPicker(
+    colors: List<ColorModel>,
+    onColorSelect: (ColorModel) -> Unit
+){
+    Column (
+        modifier = Modifier.fillMaxWidth()
+    ){
+        Text(
+            text = "Color picker",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(8.dp)
+
+        )
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth()
+        ){
+            items(
+                colors.size
+            ){
+                    itemIdex ->
+                val color = colors[itemIdex]
+                ColorItem(
+                    color = color,
+                    onColorSelect = onColorSelect
+                )
+            }
+        }
+    }
+
+}
+
 
 @Composable
 fun ColorItem(
@@ -50,4 +86,16 @@ fun ColorItem(
 @Composable
 fun ColorItemView(){
     ColorItem(ColorModel.DEFAULT){}
+}
+
+@Preview
+@Composable
+fun  ColorPickerPreview() {
+    ColorPicker(
+        colors = listOf(
+            ColorModel.DEFAULT,
+            ColorModel.DEFAULT,
+            ColorModel.DEFAULT
+        )
+    ) { }
 }
