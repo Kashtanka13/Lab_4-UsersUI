@@ -1,5 +1,4 @@
 package com.topic2.android.notes.ui.screens
-
 import androidx.compose.runtime.Composable
 import com.topic2.android.notes.viewmodel.MainViewModel
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +13,10 @@ import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.ui.components.Note
 import android.annotation.SuppressLint
 import androidx.compose.material.*
+import androidx.compose.runtime.rememberCoroutineScope
+import com.topic2.android.notes.routing.Screen
+import com.topic2.android.notes.ui.components.AppDrawer
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -23,28 +26,42 @@ fun NotesScreen(
     val notes: List<NoteModel> by viewModel
         .notesNotInTrash
         .observeAsState(listOf())
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
 
-            Scaffold (topBar = {
-                TopAppBar(
-                    title = "Notes",
-                    icon = Icons.Filled.List,
-                    onIconClick = {}
-                )
-
+    Scaffold (topBar = {
+        TopAppBar(
+            title = "Notes",
+            icon = Icons.Filled.List,
+                    onIconClick = {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.open()
+                }
+            }
+        )
     },
-    content = {
-        if (notes.isNotEmpty()) {
-            NotesList(
-                notes = notes, onNoteCheckedChange = {
-                    viewModel.onNoteCheckedChange(it)
-                },
-                onNoteClick = { viewModel.onNoteClick(it)}
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            AppDrawer(
+                currentScreen = Screen.Notes, closeDrawerAction = {
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                }
             )
+        },
+        content = {
+            if (notes.isNotEmpty()) {
+                NotesList(
+                    notes = notes, onNoteCheckedChange = {
+                        viewModel.onNoteCheckedChange(it)
+                    },
+                    onNoteClick = { viewModel.onNoteClick(it)}
+                )
+            }
         }
-    }
     )
 }
-
 @Composable
 private fun NotesList(
     notes: List<NoteModel>,
