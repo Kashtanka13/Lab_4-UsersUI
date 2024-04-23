@@ -15,6 +15,12 @@ import com.topic2.android.notes.ui.components.NoteColor
 import com.topic2.android.notes.util.fromHex
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.text.font.FontWeight
+import com.topic2.android.notes.viewmodel.MainViewModel
+
+@Composable
+fun SaveNoteScreen(viewModel: MainViewModel) {
+
+}
 
 @Composable
 private fun ColorPicker(
